@@ -1,10 +1,7 @@
 package data.token;
 
-import lombok.EqualsAndHashCode;
-import lombok.Value;
+import java.util.regex.Pattern;
 
-@EqualsAndHashCode(callSuper = true)
-@Value
-public class OperatorToken extends Token<Operator> {
-  Operator value;
+public record OperatorToken(Operator value) implements Token<Operator> {
+  public static final Pattern pattern = Pattern.compile("^[=+\\-*/]$");
 }
