@@ -1,17 +1,18 @@
 package data;
 
-import data.token.Token;
+import data.token.CellReference;
+import data.token.TokenTree;
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@SuppressWarnings("rawtypes")
 @Data
+@Builder(setterPrefix = "with")
 public class Cell {
-  //TODO: Tree<Token>
-  private List<Token> tokens;
-  private List<Cell>  referrers;
-  private boolean     recalculateRequiredOnGet;
-  private BigDecimal  lastCalculatedValue;
+  private TokenTree           tokens;
+  private List<CellReference> referrers;
+  private boolean             recalculateRequiredOnGet;
+  private BigDecimal          lastCalculatedValue;
 }

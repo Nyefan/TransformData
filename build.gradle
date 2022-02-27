@@ -1,25 +1,46 @@
 plugins {
-    id 'java'
-    id 'application'
-    id 'io.freefair.lombok' version '6.4.1'
+  id 'java'
+  id 'application'
+  id 'io.freefair.lombok' version '6.4.1'
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+
+    }
 }
 
 application {
-    mainClass = 'MainClass'
+  mainClass = 'MainClass'
 }
 
 group 'org.example'
 version '1.0-SNAPSHOT'
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 
 test {
-    useJUnitPlatform()
+  useJUnitPlatform()
+}
+
+var ENABLE_PREVIEW = "--enable-preview"
+
+tasks.withType(JavaCompile).all {
+  options.compilerArgs.add(ENABLE_PREVIEW)
+}
+
+tasks.withType(Test).all {
+  jvmArgs.add(ENABLE_PREVIEW)
+}
+
+tasks.withType(JavaExec).all {
+  jvmArgs.add(ENABLE_PREVIEW)
 }

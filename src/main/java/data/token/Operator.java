@@ -10,10 +10,10 @@ import java.util.function.BiFunction;
 @AllArgsConstructor
 public enum Operator {
   EQUALS("=", (a, b) -> b),
-  PLUS("+", BigDecimal::add),
-  MINUS("-", BigDecimal::subtract),
-  TIMES("*", BigDecimal::multiply),
-  DIVIDED_BY("/", (a, b) -> a.divide(b, RoundingMode.HALF_EVEN));
+  ADD("+", BigDecimal::add),
+  SUBTRACT("-", BigDecimal::subtract),
+  MULTIPLY("*", BigDecimal::multiply),
+  DIVIDE("/", (a, b) -> a.divide(b, 8, RoundingMode.HALF_EVEN)); //TODO: curry the (a,b) so a scale can be set by the caller
 
   @Getter
   private final String                                         symbol;
@@ -29,10 +29,10 @@ public enum Operator {
   public static Operator fromString(String symbol) {
     return switch (symbol) {
       case "=" -> EQUALS;
-      case "+" -> PLUS;
-      case "-" -> MINUS;
-      case "*" -> TIMES;
-      case "/" -> DIVIDED_BY;
+      case "+" -> ADD;
+      case "-" -> SUBTRACT;
+      case "*" -> MULTIPLY;
+      case "/" -> DIVIDE;
       default -> throw new IllegalArgumentException("Operator can only be created from one of the following symbols: " + symbols());
     };
   }
