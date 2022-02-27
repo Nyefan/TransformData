@@ -1,0 +1,3 @@
+```shell
+gradle application:run
+```
