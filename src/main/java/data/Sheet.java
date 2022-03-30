@@ -23,10 +23,6 @@ public class Sheet {
 
   private final Map<String, Cell> sheet = new HashMap<>();
 
-  public Sheet() {
-
-  }
-
   public Optional<BigDecimal> getCell(String cellId) {
     var cell = sheet.get(cellId);
 
