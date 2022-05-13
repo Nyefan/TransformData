@@ -16,6 +16,8 @@ import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.StringTokenizer;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collector;
 import java.util.stream.StreamSupport;
 
@@ -82,18 +84,22 @@ public class Sheet {
 
   @SuppressWarnings("rawtypes")
   private Token createTokenFromString(String tokenString) {
-    if (OperatorToken.pattern.matcher(tokenString).matches()) {
-      return new OperatorToken(Operator.fromString(tokenString));
-    }
+    Predicate<Pattern> match = (pattern) -> pattern.matcher(tokenString).matches();
+    return switch (tokenString) {
+      case String s && match.test(OperatorToken.pattern) -> new OperatorToken(Operator.fromString(tokenString));
+      case String s && match.test(CellReferenceToken.pattern) -> new CellReferenceToken(new CellReference(tokenString));
+      case String s && match.test(NumberToken.pattern) -> new NumberToken(new BigDecimal(tokenString));
+      default -> throw new IllegalArgumentException("Unable to create token from string: " + tokenString);
+    };
 
-    if (CellReferenceToken.pattern.matcher(tokenString).matches()) {
-      return new CellReferenceToken(new CellReference(tokenString));
-    }
-
-    if (NumberToken.pattern.matcher(tokenString).matches()) {
-      return new NumberToken(new BigDecimal(tokenString));
-    }
-
-    throw new IllegalArgumentException("Unable to create token from string: " + tokenString);
+//    if (OperatorToken.pattern.matcher(tokenString).matches()) {
+//      return new OperatorToken(Operator.fromString(tokenString));
+//    } else if (CellReferenceToken.pattern.matcher(tokenString).matches()) {
+//      return new CellReferenceToken(new CellReference(tokenString));
+//    } else if (NumberToken.pattern.matcher(tokenString).matches()) {
+//      return new NumberToken(new BigDecimal(tokenString));
+//    } else {
+//      throw new IllegalArgumentException("Unable to create token from string: " + tokenString);
+//    }
   }
 }
